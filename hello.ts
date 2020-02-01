@@ -88,3 +88,79 @@ u.username='zhangshan';
 u.password='password';
 const db=new MysqlDB<User>();
 db.add(u)
+
+
+interface DBI<T>{
+    add(info:T):boolean;
+    update(info:T,id:number):boolean;
+    delete(id:number):boolean;
+    get(id:number):any[];
+}
+
+class MysqlDBI<T> implements DBI<T>{
+    add(info: T): boolean {
+        throw new Error("Method not implemented.");
+    }    
+    update(info: T, id: number): boolean {
+        throw new Error("Method not implemented.");
+    }
+    delete(id: number): boolean {
+        throw new Error("Method not implemented.");
+    }
+    get(id: number): any[] {
+        throw new Error("Method not implemented.");
+    }
+}
+
+
+const oMysqlDB=new MysqlDB<User>();
+oMysqlDB.add(u)
+
+
+
+// 装饰器。
+
+function logClass(params:string){
+    return function(target:any){
+        console.log("TCL: logClass -> target", target)
+        console.log("TCL: logClass -> params", params)
+        target.prototype.apiURL=params
+    }
+}
+
+function logClass2(params:any){
+    return class extends params{
+       name:any="修改后的名字"
+       getData(){
+
+       }
+    }
+}
+
+
+
+function logClass3(params:any){
+    return function (target:any,attr:any){
+        target[attr]=params
+    }
+}
+
+
+@logClass('http://api.aigisss.com')
+class HttpClient{
+    public name:string|undefined;
+    @logClass3('helloworld')
+    public url:any |undefined
+    constructor(){
+        this.name="修改之前的名字"
+    }
+    getData(){
+
+    }
+}
+
+const httpClient=new HttpClient()
+console.log("TCL: httpClient", httpClient)
+
+
+
